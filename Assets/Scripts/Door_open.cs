@@ -30,9 +30,7 @@ public class DoorSideOpen : MonoBehaviour
         if (inRange && kb[key].wasPressedThisFrame)
         {
             Vector3 localPlayerPos = transform.InverseTransformPoint(player.position);
-            Debug.Log("Local Player Pos: " + localPlayerPos);
-            float sideSign = (localPlayerPos.x >= 0f) ? 1f : -1f;
-            Debug.Log("Side Sign: " + sideSign);
+            float sideSign = (localPlayerPos.z >= 0f) ? 1f : -1f;
             isOpen = !isOpen;
             targetY = isOpen ? closedY + sideSign * openAngle : closedY;
         }
