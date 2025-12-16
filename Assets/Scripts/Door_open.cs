@@ -9,6 +9,8 @@ public class DoorSideOpen : MonoBehaviour
     [SerializeField] private float openAngle = 90f;
     [SerializeField] private float speed = 180f;
 
+    [SerializeField] private BoxCollider doorCollider;
+
     private bool inRange;
     private bool isOpen;
 
@@ -38,6 +40,10 @@ public class DoorSideOpen : MonoBehaviour
         float y = Mathf.MoveTowardsAngle(transform.localEulerAngles.y, targetY, speed * Time.deltaTime);
         Vector3 e = transform.localEulerAngles;
         transform.localEulerAngles = new Vector3(e.x, y, e.z);
+        
+        float angleDelta = Mathf.Abs(Mathf.DeltaAngle(y, targetY));
+
+        doorCollider.enabled = angleDelta < 0.5f;
     }
 
     private void OnTriggerEnter(Collider other)
