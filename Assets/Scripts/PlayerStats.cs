@@ -5,12 +5,17 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private int _maxHealth = 5;
     private int _currentHealth;
     [SerializeField] private int _attackDamage = 1;
-    [SerializeField] private int _attackSpeed = 1;
-    [SerializeField] private int _moveSpeed = 5;
+    [SerializeField] private float _attackSpeed = 1;
+    [SerializeField] private float _moveSpeed = 5;
+    [SerializeField] private PlayerWeapon _playerWeapon;
 
     private void Start()
     {
         _currentHealth = _maxHealth;
+        if (_playerWeapon != null)
+        {
+            _playerWeapon = GetComponentInChildren<PlayerWeapon>();
+        }
     }
 
     public void TakeDamage(int damage)
@@ -29,15 +34,18 @@ public class PlayerStats : MonoBehaviour
 
     public int GetAttackDamage()
     {
-        return _attackDamage;
+        WeaponStats weaponStats = _playerWeapon.GetCurrentWeaponStats();
+        int weaponDamage = _playerWeapon != null ? weaponStats.GetDamage() : 0;
+        return _attackDamage + weaponDamage;
     }
 
-    public int GetAttackSpeed()
+    public float GetAttackSpeed()
     {
-        return _attackSpeed;
+        WeaponStats weaponStats = _playerWeapon.GetCurrentWeaponStats();
+        return _playerWeapon != null ? weaponStats.GetAttackSpeed() : _attackSpeed;
     }
 
-    public int GetMoveSpeed()
+    public float GetMoveSpeed()
     {
         return _moveSpeed;
     }

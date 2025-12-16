@@ -9,6 +9,18 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private PlayerStats _playerStats;
     [SerializeField] private PlayerMovement _playerMovement;
 
+    private void Start()
+    {
+        if (_playerStats == null)
+        {
+            _playerStats = GetComponent<PlayerStats>();
+        }
+        if (_playerMovement == null)
+        {
+            _playerMovement = GetComponent<PlayerMovement>();
+        }
+    }
+
 
     public void Attack(InputAction.CallbackContext context)
     {

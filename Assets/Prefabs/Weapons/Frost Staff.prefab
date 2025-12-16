@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8500537369779558637}
   - component: {fileID: 8471814045179212515}
   - component: {fileID: 8481820514310854713}
+  - component: {fileID: 5822852495617297625}
   m_Layer: 0
   m_Name: Frost Staff
   m_TagString: Untagged
@@ -86,3 +87,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5822852495617297625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8494400044008359955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a31f01b5f26e0d4f8c44625afb0d725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damage: 1
+  _attackSpeed: 1
+  _isRanged: 1

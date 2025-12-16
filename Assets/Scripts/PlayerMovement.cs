@@ -7,8 +7,28 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private PlayerStats _playerStats;
     [SerializeField] private Transform _playerVisual;
     [SerializeField] private Animator _playerAnimator;
+    [SerializeField] private PlayerWeapon _playerWeapon;
     private Vector2 _moveInput;
 
+    private void Start()
+    {
+        if (_playerStats == null)
+        {
+            _playerStats = GetComponent<PlayerStats>();
+        }
+        if (_mainCamera == null)
+        {
+            _mainCamera = Camera.main;
+        }
+        if (_playerAnimator == null)
+        {
+            _playerAnimator = _playerVisual.GetComponent<Animator>();
+        }
+        if (_playerWeapon == null)
+        {
+            _playerWeapon = GetComponentInChildren<PlayerWeapon>();
+        }
+    }
     public void Move(InputAction.CallbackContext context)
     {
         _moveInput = context.ReadValue<Vector2>();
@@ -61,11 +81,16 @@ public class PlayerMovement : MonoBehaviour
         HandleMovement();
         HandleRotation();
         UpdateAnimator();
-
     }
 
     public void AttackAnimation()
     {
-        _playerAnimator.Play("Attack01", 0, 0f);
+        WeaponStats weaponStats = _playerWeapon.GetCurrentWeaponStats();
+        if (_playerWeapon == null) return;
+        if (weaponStats.IsRanged())
+            _playerAnimator.Play("Attack01", 0, 0f);
+        if (!weaponStats.IsRanged())
+            _playerAnimator.Play("Attack04", 0, 0f);
+
     }
 }
