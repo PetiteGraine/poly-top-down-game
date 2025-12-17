@@ -9,7 +9,7 @@ public class DoorSideOpen : MonoBehaviour
     [SerializeField] private float openAngle = 90f;
     [SerializeField] private float speed = 180f;
 
-    [SerializeField] private BoxCollider doorCollider;
+    [SerializeField] private Collider Collider;
 
     private bool inRange;
     private bool isOpen;
@@ -43,7 +43,7 @@ public class DoorSideOpen : MonoBehaviour
         
         float angleDelta = Mathf.Abs(Mathf.DeltaAngle(y, targetY));
 
-        doorCollider.enabled = angleDelta < 0.5f;
+        Collider.enabled = angleDelta < 0.5f;
     }
 
     private void OnTriggerEnter(Collider other)
