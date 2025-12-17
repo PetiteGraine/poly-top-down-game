@@ -1,26 +1,28 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class DoorSideOpen : MonoBehaviour
+public class Lever_actif : MonoBehaviour
 {
     [SerializeField] private Transform player;
     [SerializeField] private Key key = Key.E;
 
-    [SerializeField] private float openAngle = 90f;
-    [SerializeField] private float speed = 180f;
+    [SerializeField] private float ActifAngle = 50f;
+    [SerializeField] private float speed = 90f;
 
     [SerializeField] private Collider Collider;
 
-    private bool inRange;
-    private bool isOpen;
+    [SerializeField] private GateLift gate;
 
-    private float closedY;
-    private float targetY;
+    private bool inRange;
+    private bool isActif;
+
+    private float DeactifX;
+    private float targetX;
 
     private void Awake()
     {
-        closedY = transform.localEulerAngles.y;
-        targetY = closedY;
+        DeactifX = transform.localEulerAngles.x;
+        targetX = DeactifX;
     }
 
     private void Update()
@@ -32,14 +34,17 @@ public class DoorSideOpen : MonoBehaviour
         if (inRange && kb[key].wasPressedThisFrame)
         {
             Vector3 localPlayerPos = transform.InverseTransformPoint(player.position);
-            float sideSign = (localPlayerPos.z >= 0f) ? 1f : -1f;
-            isOpen = !isOpen;
-            targetY = isOpen ? closedY + sideSign * openAngle : closedY;
+            isActif = !isActif;
+            targetX = isActif ? DeactifX + ActifAngle : DeactifX;
+
+            if (gate != null)
+                gate.SetOpen(isActif);
+
         }
 
-        float y = Mathf.MoveTowardsAngle(transform.localEulerAngles.y, targetY, speed * Time.deltaTime);
+        float x = Mathf.MoveTowardsAngle(transform.localEulerAngles.x, targetX, speed * Time.deltaTime);
         Vector3 e = transform.localEulerAngles;
-        transform.localEulerAngles = new Vector3(e.x, y, e.z);
+        transform.localEulerAngles = new Vector3(x, e.y, e.z);
     }
 
     private void OnTriggerEnter(Collider other)
