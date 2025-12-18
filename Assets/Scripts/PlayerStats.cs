@@ -89,18 +89,13 @@ public class PlayerStats : MonoBehaviour
 
     public int GetCurrentHealth()
     {
-        int augmentsHealth = 0;
-        foreach (Augment augment in _equippedAugments)
-        {
-            augmentsHealth += augment.GetHealthBonus();
-        }
-
-        return _currentHealth + augmentsHealth;
+        return _currentHealth;
     }
 
     public void EquipAugment(Augment augment)
     {
         _equippedAugments.Add(augment);
+        _currentHealth += augment.GetHealthBonus();
         UpdateCanvas();
     }
 }
