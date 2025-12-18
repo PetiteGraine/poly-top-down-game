@@ -17,14 +17,26 @@ public class Hitbox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Enemy"))
+
+        if (other.CompareTag("Player"))
         {
-            EnemyStats enemyStats = other.GetComponent<EnemyStats>();
-            if (enemyStats != null)
+            PlayerStats playerStats = other.GetComponent<PlayerStats>();
+            if (playerStats != null)
             {
-                enemyStats.TakeDamage(_damageAmount);
+                playerStats.TakeDamage(_damageAmount);
             }
             Destroy(gameObject);
         }
+        else
+
+            if (other.CompareTag("Enemy"))
+            {
+                EnemyStats enemyStats = other.GetComponent<EnemyStats>();
+                if (enemyStats != null)
+                {
+                    enemyStats.TakeDamage(_damageAmount);
+                }
+                Destroy(gameObject);
+            }
     }
 }

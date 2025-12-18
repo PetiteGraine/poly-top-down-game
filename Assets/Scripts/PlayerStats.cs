@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _healthText;
+
     [SerializeField] private int _maxHealth = 5;
     private int _currentHealth;
     [SerializeField] private int _attackDamage = 1;
@@ -12,21 +12,33 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private float _moveSpeed = 5;
     [SerializeField] private PlayerWeapon _playerWeapon;
     [SerializeField] private List<Augment> _equippedAugments = new List<Augment>();
+    [SerializeField] private TextMeshProUGUI _HPText;
+    [SerializeField] private TextMeshProUGUI _DMGText;
+    [SerializeField] private TextMeshProUGUI _ASText;
+    [SerializeField] private TextMeshProUGUI _MSText;
 
     private void Start()
     {
         _currentHealth = _maxHealth;
-        _healthText.text = $"HP: {_currentHealth}";
+        UpdateCanvas();
         if (_playerWeapon != null)
         {
             _playerWeapon = GetComponentInChildren<PlayerWeapon>();
         }
     }
 
+    public void UpdateCanvas()
+    {
+        _HPText.text = $"HP: {GetCurrentHealth()}";
+        _DMGText.text = $"DMG: {GetAttackDamage()}";
+        _ASText.text = $"AS: {GetAttackSpeed():F2}";
+        _MSText.text = $"MS: {GetMoveSpeed():F2}";
+    }
+
     public void TakeDamage(int damage)
     {
         _currentHealth -= damage;
-        _healthText.text = $"HP: {_currentHealth}";
+        _HPText.text = $"HP: {_currentHealth}";
         if (_currentHealth <= 0)
         {
             Die();
@@ -89,5 +101,6 @@ public class PlayerStats : MonoBehaviour
     public void EquipAugment(Augment augment)
     {
         _equippedAugments.Add(augment);
+        UpdateCanvas();
     }
 }
