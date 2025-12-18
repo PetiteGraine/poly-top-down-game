@@ -45,7 +45,8 @@ public class SlimeAI_Simple : MonoBehaviour
         if (dist <= chaseRange && TargetReachable())
         {
             repathTimer -= Time.deltaTime;
-            if (targetInAttackTrigger && canAttack) { 
+            if (targetInAttackTrigger && canAttack)
+            {
                 repathTimer = repathInterval;
                 StartCoroutine(DoAttack());
 

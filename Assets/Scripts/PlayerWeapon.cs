@@ -2,52 +2,46 @@ using UnityEngine;
 
 public class PlayerWeapon : MonoBehaviour
 {
-    [SerializeField] private GameObject _weaponsParent;
-    [SerializeField] private GameObject _currentWeapon;
+    [SerializeField] private GameObject[] _weapons;
+    [SerializeField] private int _currentWeaponIndex;
 
     private void Start()
     {
-        if (_weaponsParent == null)
-        {
-            _weaponsParent = transform.Find("Weapon").gameObject;
-        }
-
-        if (_currentWeapon == null && _weaponsParent != null)
-        {
-            foreach (Transform child in _weaponsParent.transform)
-            {
-                if (child == null) continue;
-                WeaponStats weaponStats = child.GetComponent<WeaponStats>();
-                if (weaponStats != null)
-                {
-                    _currentWeapon = weaponStats.gameObject;
-                    break;
-                }
-            }
-        }
+        SwitchWeapon(_currentWeaponIndex);
     }
 
-    public void SetCurrentWeapon(GameObject newWeapon)
+    public bool isRangedWeapon()
     {
-        _currentWeapon = newWeapon;
+        if (_weapons.Length == 0) return false;
+        WeaponStats weaponComponent = _weapons[_currentWeaponIndex].GetComponent<WeaponStats>();
+        if (weaponComponent != null)
+        {
+            return weaponComponent.IsRanged();
+        }
+        return false;
     }
 
-    public GameObject GetCurrentWeapon()
+    public void SwitchWeapon(int newWeaponIndex)
     {
-        return _currentWeapon;
+        if (_weapons.Length == 0) return;
+        if (newWeaponIndex == _currentWeaponIndex) return;
+        if (_weapons[_currentWeaponIndex] != null)
+            _weapons[_currentWeaponIndex].SetActive(false);
+
+        if (newWeaponIndex < 0 || newWeaponIndex >= _weapons.Length) return;
+
+        _weapons[newWeaponIndex].SetActive(true);
+        _currentWeaponIndex = newWeaponIndex;
+    }
+
+    public int GetCurrentWeaponIndex()
+    {
+        return _currentWeaponIndex;
     }
 
     public WeaponStats GetCurrentWeaponStats()
     {
-        if (_currentWeapon != null)
-        {
-            return _currentWeapon.GetComponent<WeaponStats>();
-        }
-        return null;
-    }
-
-    public void ChangeWeapon(GameObject newWeapon)
-    {
-        _currentWeapon = newWeapon;
+        if (_weapons.Length == 0) return null;
+        return _weapons[_currentWeaponIndex].GetComponent<WeaponStats>();
     }
 }
