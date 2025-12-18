@@ -11,6 +11,10 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private PlayerWeapon _playerWeapon;
     [SerializeField] private PlayerMovement _playerMovement;
 
+    private float AttackCooldown => 1f / _playerStats.GetAttackSpeed();
+    private float _attackCoaldownTimer = 0f;
+
+
     private void Start()
     {
         if (_playerStats == null)
@@ -27,15 +31,28 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (_attackCoaldownTimer > 0f)
+        {
+            _attackCoaldownTimer -= Time.deltaTime;
+        }
+    }
 
     public void Attack(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            Shoot();
-            _playerMovement.AttackAnimation();
-        }
+        if (!context.performed)
+            return;
+
+        if (_attackCoaldownTimer > 0f)
+            return;
+
+        Shoot();
+        _playerMovement.AttackAnimation();
+
+        _attackCoaldownTimer = AttackCooldown;
     }
+
 
     private void Shoot()
     {

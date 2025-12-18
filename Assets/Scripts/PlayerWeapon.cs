@@ -4,10 +4,15 @@ public class PlayerWeapon : MonoBehaviour
 {
     [SerializeField] private GameObject[] _weapons;
     [SerializeField] private int _currentWeaponIndex;
+    [SerializeField] private PlayerStats _playerStats;
 
     private void Start()
     {
         SwitchWeapon(_currentWeaponIndex);
+        if (_playerStats == null)
+        {
+            _playerStats = GetComponent<PlayerStats>();
+        }
     }
 
     public bool isRangedWeapon()
@@ -32,6 +37,7 @@ public class PlayerWeapon : MonoBehaviour
 
         _weapons[newWeaponIndex].SetActive(true);
         _currentWeaponIndex = newWeaponIndex;
+        _playerStats.UpdateCanvas();
     }
 
     public int GetCurrentWeaponIndex()

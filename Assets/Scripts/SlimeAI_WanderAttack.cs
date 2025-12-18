@@ -23,7 +23,12 @@ public class SlimeAI_Simple : MonoBehaviour
 
     [Header("Tuning")]
     [SerializeField] private float repathInterval = 0.2f;
-    [SerializeField] private float attackCooldown = 1.2f;
+    [SerializeField] private EnemyStats enemyStats;
+    [SerializeField] private float attackCooldown => 1f / enemyStats.GetAttackSpeed();
+
+    [SerializeField] private Transform _firePoint;
+
+    [SerializeField] private GameObject _meleeAttackPrefab;
 
     private float repathTimer;
     private bool canAttack = true;
@@ -91,6 +96,8 @@ public class SlimeAI_Simple : MonoBehaviour
 
         anim.SetBool(pIdle, false);
         anim.SetBool(pAttack, true);
+        GameObject spawnedAttack = Instantiate(_meleeAttackPrefab, _firePoint.position, _firePoint.rotation);
+        spawnedAttack.GetComponent<Hitbox>().SetDamageAmount(enemyStats.GetAttackDamage());
         yield return null;
         anim.SetBool(pAttack, false);
         anim.SetBool(pIdle, true);

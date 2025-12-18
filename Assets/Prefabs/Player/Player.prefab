@@ -495,6 +495,7 @@ GameObject:
   - component: {fileID: 5628141018752181277}
   - component: {fileID: 7620961967263341845}
   - component: {fileID: 2043000499786828847}
+  - component: {fileID: 6937289833380642076}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -750,11 +751,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2153787302fdc3439253a425e3c798c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _healthText: {fileID: 0}
   _maxHealth: 5
   _attackDamage: 0
   _attackSpeed: 1
   _moveSpeed: 5
   _playerWeapon: {fileID: 2043000499786828847}
+  _equippedAugments: []
 --- !u!114 &7620961967263341845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -770,7 +773,7 @@ MonoBehaviour:
   _rangedAttackPrefab: {fileID: 5908768077799619222, guid: 5fbfc8444eeb5474abb1cfa99ef7aecb, type: 3}
   _meleeAttackPrefab: {fileID: 5908768077799619222, guid: ed4a9c181a9af8048985728bdd93fe65, type: 3}
   _firePoint: {fileID: 4324333243001104972}
-  _fireSpeed: 3
+  _fireSpeed: 6
   _playerStats: {fileID: 5628141018752181277}
   _playerWeapon: {fileID: 2043000499786828847}
   _playerMovement: {fileID: 2889220020686455783}
@@ -786,8 +789,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ccc4f9cc1b820341b4e924bb48fb8aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _weapons: []
+  _weapons:
+  - {fileID: 1720741218049529125}
+  - {fileID: 3098912836773257600}
+  - {fileID: 1322346569522534}
+  - {fileID: 1141652980046948}
   _currentWeaponIndex: 0
+--- !u!114 &6937289833380642076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1248815240492774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3c8dedb9a80ab74d8d1e2ef423fa063, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1251583507443948
 GameObject:
   m_ObjectHideFlags: 0
@@ -2851,11 +2870,20 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7630224889987084908, guid: 4397e1243c505fb4a8a52f6fbeb7ba58, type: 3}
+      propertyPath: _attackSpeed
+      value: 1.25
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4397e1243c505fb4a8a52f6fbeb7ba58, type: 3}
+--- !u!1 &1141652980046948 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1565797841036341947, guid: 4397e1243c505fb4a8a52f6fbeb7ba58, type: 3}
+  m_PrefabInstance: {fileID: 1566929984690220767}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4494806104067236 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1563068498093318779, guid: 4397e1243c505fb4a8a52f6fbeb7ba58, type: 3}
@@ -2930,6 +2958,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1d88e25bd0a72a4ca3b48eafbe9e009, type: 3}
+--- !u!1 &1720741218049529125 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 146043810389835463, guid: f1d88e25bd0a72a4ca3b48eafbe9e009, type: 3}
+  m_PrefabInstance: {fileID: 1578396319521254370}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2065636731608584095 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 670203734019433597, guid: f1d88e25bd0a72a4ca3b48eafbe9e009, type: 3}
@@ -3017,6 +3050,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 358143959116739214, guid: c7a0ea11767b0fe43ae8ca9acabb967f, type: 3}
   m_PrefabInstance: {fileID: 2644244558202669492}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3098912836773257600 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1131444349367396404, guid: c7a0ea11767b0fe43ae8ca9acabb967f, type: 3}
+  m_PrefabInstance: {fileID: 2644244558202669492}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8495646519945696629
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3025,6 +3063,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4697918775314360}
     m_Modifications:
+    - target: {fileID: 5822852495617297625, guid: 242a7efed74fcc346b79bc264f8b1e1c, type: 3}
+      propertyPath: _attackSpeed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8494400044008359955, guid: 242a7efed74fcc346b79bc264f8b1e1c, type: 3}
       propertyPath: m_Name
       value: Frost Staff
@@ -3078,6 +3120,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 242a7efed74fcc346b79bc264f8b1e1c, type: 3}
+--- !u!1 &1322346569522534 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8494400044008359955, guid: 242a7efed74fcc346b79bc264f8b1e1c, type: 3}
+  m_PrefabInstance: {fileID: 8495646519945696629}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4891505152052632 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8500537369779558637, guid: 242a7efed74fcc346b79bc264f8b1e1c, type: 3}

@@ -1,7 +1,9 @@
 using UnityEngine;
+using TMPro;
 
 public class EnemyStats : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI _healthText;
     [SerializeField] private int _maxHealth = 5;
     private int _currentHealth;
     [SerializeField] private int _attackDamage = 1;
@@ -18,6 +20,7 @@ public class EnemyStats : MonoBehaviour
     private void Start()
     {
         _currentHealth = _maxHealth;
+        _healthText.text = $"HP: {_currentHealth}";
     }
 
     public void TakeDamage(int damage)
@@ -27,6 +30,7 @@ public class EnemyStats : MonoBehaviour
         if (_bossCombat != null)    // Reference to the BossCombatTeleport script
             _bossCombat.OnBossDamaged();
 
+        _healthText.text = $"HP: {_currentHealth}";
         if (_currentHealth <= 0)
         {
             Die();
@@ -66,17 +70,4 @@ public class EnemyStats : MonoBehaviour
     {
         return _maxHealth;
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            PlayerStats playerStats = other.GetComponent<PlayerStats>();
-            if (playerStats != null)
-            {
-                playerStats.TakeDamage(GetAttackDamage());
-            }
-        }
-    }
-
 }

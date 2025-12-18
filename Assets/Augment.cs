@@ -6,11 +6,17 @@ public class Augment : MonoBehaviour
     [SerializeField] private int _attackDamageBonus = 1;
     [SerializeField] private float _attackSpeedBonus = 1;
     [SerializeField] private float _moveSpeedBonus = 5;
-    [SerializeField] private PlayerStats _playerStats;
+    [SerializeField] private string _augmentName = "Augment";
+    [SerializeField] private PlayerAugment _playerAugment;
 
     private void Start()
     {
-        _playerStats = FindFirstObjectByType<PlayerStats>();
+        _playerAugment = FindFirstObjectByType<PlayerAugment>();
+    }
+
+    public string GetAugmentName()
+    {
+        return _augmentName;
     }
 
     public int GetHealthBonus()
@@ -37,7 +43,7 @@ public class Augment : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            _playerStats.EquipAugment(this);
+            _playerAugment.EquipAugment(this);
         }
     }
 }
