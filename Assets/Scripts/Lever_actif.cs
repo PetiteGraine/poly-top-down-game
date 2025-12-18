@@ -9,8 +9,6 @@ public class Lever_actif : MonoBehaviour
     [SerializeField] private float ActifAngle = 50f;
     [SerializeField] private float speed = 90f;
 
-    [SerializeField] private Collider Collider;
-
     [SerializeField] private GateLift gate;
 
     private bool inRange;

@@ -116,6 +116,11 @@ public class SlimeAI_Simple : MonoBehaviour
         return Vector3.Distance(a, b);
     }
 
+    public void SetTarget(Transform newTarget)
+    {
+        target = newTarget;
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
