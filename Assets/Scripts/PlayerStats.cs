@@ -11,7 +11,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private float _attackSpeed = 1;
     [SerializeField] private float _moveSpeed = 5;
     [SerializeField] private PlayerWeapon _playerWeapon;
-    [SerializeField] private List<Augment> _equippedAugments = new List<Augment>();
+    [SerializeField] private PlayerAugment _playerAugment;
     [SerializeField] private TextMeshProUGUI _HPText;
     [SerializeField] private TextMeshProUGUI _DMGText;
     [SerializeField] private TextMeshProUGUI _ASText;
@@ -21,6 +21,10 @@ public class PlayerStats : MonoBehaviour
     {
         _currentHealth = _maxHealth;
         UpdateCanvas();
+        if (_playerAugment != null)
+        {
+            _playerAugment = GetComponent<PlayerAugment>();
+        }
         if (_playerWeapon != null)
         {
             _playerWeapon = GetComponentInChildren<PlayerWeapon>();
@@ -52,6 +56,8 @@ public class PlayerStats : MonoBehaviour
 
     public int GetAttackDamage()
     {
+        List<Augment> _equippedAugments = _playerAugment.GetEquippedAugments();
+
         WeaponStats weaponStats = _playerWeapon.GetCurrentWeaponStats();
         int weaponDamage = _playerWeapon != null ? weaponStats.GetDamage() : 0;
         int augmentsDamage = 0;
@@ -65,6 +71,8 @@ public class PlayerStats : MonoBehaviour
 
     public float GetAttackSpeed()
     {
+        List<Augment> _equippedAugments = _playerAugment.GetEquippedAugments();
+
         WeaponStats weaponStats = _playerWeapon.GetCurrentWeaponStats();
         float augmentsAS = 0;
         foreach (Augment augment in _equippedAugments)
@@ -77,6 +85,8 @@ public class PlayerStats : MonoBehaviour
 
     public float GetMoveSpeed()
     {
+        List<Augment> _equippedAugments = _playerAugment.GetEquippedAugments();
+
         float augmentsMS = 0;
         foreach (Augment augment in _equippedAugments)
         {
@@ -94,7 +104,6 @@ public class PlayerStats : MonoBehaviour
 
     public void EquipAugment(Augment augment)
     {
-        _equippedAugments.Add(augment);
         _currentHealth += augment.GetHealthBonus();
         UpdateCanvas();
     }
