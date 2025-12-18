@@ -3,10 +3,12 @@ using UnityEngine.InputSystem;
 
 public class PlayerAttack : MonoBehaviour
 {
-    [SerializeField] private GameObject _attackPrefab;
+    [SerializeField] private GameObject _rangedAttackPrefab;
+    [SerializeField] private GameObject _meleeAttackPrefab;
     [SerializeField] private Transform _firePoint;
     [SerializeField] private float _fireSpeed = 3f;
     [SerializeField] private PlayerStats _playerStats;
+    [SerializeField] private PlayerWeapon _playerWeapon;
     [SerializeField] private PlayerMovement _playerMovement;
 
     private void Start()
@@ -18,6 +20,10 @@ public class PlayerAttack : MonoBehaviour
         if (_playerMovement == null)
         {
             _playerMovement = GetComponent<PlayerMovement>();
+        }
+        if (_playerWeapon == null)
+        {
+            _playerWeapon = GetComponent<PlayerWeapon>();
         }
     }
 
@@ -33,7 +39,14 @@ public class PlayerAttack : MonoBehaviour
 
     private void Shoot()
     {
-        GameObject spawnedAttack = Instantiate(_attackPrefab, transform.position, transform.rotation);
+        GameObject spawnedAttack;
+        if (_playerWeapon.isRangedWeapon() == false)
+        {
+            spawnedAttack = Instantiate(_meleeAttackPrefab, _firePoint.position, _firePoint.rotation);
+            spawnedAttack.GetComponent<Hitbox>().SetDamageAmount(_playerStats.GetAttackDamage());
+            return;
+        }
+        spawnedAttack = Instantiate(_rangedAttackPrefab, _firePoint.position, _firePoint.rotation);
         spawnedAttack.GetComponent<Hitbox>().SetDamageAmount(_playerStats.GetAttackDamage());
         if (spawnedAttack.TryGetComponent<Rigidbody>(out Rigidbody rb))
         {

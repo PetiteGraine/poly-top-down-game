@@ -15,15 +15,16 @@ public class Hitbox : MonoBehaviour
         _damageAmount = amount;
     }
 
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //     if (other.CompareTag("Enemy"))
-    //     {
-    //         EnemyHealth enemyHealth = other.GetComponent<EnemyHealth>();
-    //         if (enemyHealth != null)
-    //         {
-    //             enemyHealth.TakeDamage(_damageAmount);
-    //         }
-    //     }
-    // }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            EnemyStats enemyStats = other.GetComponent<EnemyStats>();
+            if (enemyStats != null)
+            {
+                enemyStats.TakeDamage(_damageAmount);
+            }
+            Destroy(gameObject);
+        }
+    }
 }

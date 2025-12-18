@@ -45,7 +45,8 @@ public class SlimeAI_Simple : MonoBehaviour
         if (dist <= chaseRange && TargetReachable())
         {
             repathTimer -= Time.deltaTime;
-            if (targetInAttackTrigger && canAttack) { 
+            if (targetInAttackTrigger && canAttack)
+            {
                 repathTimer = repathInterval;
                 StartCoroutine(DoAttack());
 
@@ -106,7 +107,6 @@ public class SlimeAI_Simple : MonoBehaviour
 
         anim.SetBool(pIdle, !moving);
         anim.SetBool(pMove, moving);
-        Debug.Log($"Move={anim.GetBool(pMove)}, Attack={anim.GetBool(pAttack)}, Idle={anim.GetBool(pIdle)}");
 
     }
 

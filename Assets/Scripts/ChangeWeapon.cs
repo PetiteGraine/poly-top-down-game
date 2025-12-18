@@ -3,7 +3,7 @@ using UnityEngine;
 public class ChangeWeapon : MonoBehaviour
 {
     [SerializeField] private PlayerWeapon _playerWeapon;
-    [SerializeField] private GameObject _newWeapon;
+    [SerializeField] private int _newWeaponIndex;
 
     private void Start()
     {
@@ -17,11 +17,8 @@ public class ChangeWeapon : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            _playerWeapon.gameObject.SetActive(false);
-            if (_newWeapon != null && _playerWeapon != null)
-            {
-                _playerWeapon.ChangeWeapon(_newWeapon);
-            }
+            Debug.Log("Changing weapon");
+            _playerWeapon.SwitchWeapon(_newWeaponIndex);
         }
     }
 }
