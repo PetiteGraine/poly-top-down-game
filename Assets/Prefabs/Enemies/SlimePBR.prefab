@@ -276,7 +276,7 @@ MonoBehaviour:
   agent: {fileID: 1274024773186117404}
   anim: {fileID: 1446237509252663812}
   target: {fileID: 0}
-  center: {fileID: 0}
+  center: {fileID: 197125346694358782}
   chaseRange: 6
   pIdle: Idle
   pMove: Move
@@ -366,6 +366,7 @@ MonoBehaviour:
   _attackDamage: 1
   _attackSpeed: 1
   _moveSpeed: 5
+  animator: {fileID: 1446237509252663812}
 --- !u!1 &1078413856013724779
 GameObject:
   m_ObjectHideFlags: 0

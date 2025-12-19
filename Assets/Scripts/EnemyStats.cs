@@ -9,6 +9,11 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] private int _attackDamage = 1;
     [SerializeField] private float _attackSpeed = 1;
     [SerializeField] private float _moveSpeed = 5;
+    [SerializeField] private Animator animator;
+    [SerializeField] private bool isBoss = false;
+    [SerializeField] private GameObject winPanel;
+    [SerializeField] private GameObject gameOverText;
+    [SerializeField] private GameObject winnerText;
 
     private BossCombatTeleport _bossCombat; // Reference to the BossCombatTeleport script
     private BossMinionSpawner spawner;
@@ -32,12 +37,19 @@ public class EnemyStats : MonoBehaviour
     public void TakeDamage(int damage)
     {
         _currentHealth -= damage;
+        animator.Play("GetHit");
         if (_bossCombat != null)
             _bossCombat.OnBossDamaged();
 
         _healthText.text = $"HP: {_currentHealth}";
         if (_currentHealth <= 0)
         {
+            if (isBoss)
+            {
+                gameOverText.SetActive(false);
+                winPanel.SetActive(true);
+                winnerText.SetActive(true);
+            }
             Die();
         }
     }

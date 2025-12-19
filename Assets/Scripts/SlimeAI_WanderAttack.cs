@@ -82,6 +82,7 @@ public class SlimeAI_Simple : MonoBehaviour
 
     bool TargetReachable()
     {
+
         if (!NavMesh.SamplePosition(target.position, out var hit, 2f, NavMesh.AllAreas))
             return false;
 

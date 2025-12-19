@@ -10,9 +10,10 @@ public class Lever_actif : MonoBehaviour
     [SerializeField] private float speed = 90f;
 
     [SerializeField] private GateLift gate;
+    [SerializeField] private MonoBehaviour toDisableWhenActive;
 
     private bool inRange;
-    private bool isActif;
+    public bool isActif;
 
     private float DeactifX;
     private float targetX;
@@ -36,6 +37,7 @@ public class Lever_actif : MonoBehaviour
             targetX = isActif ? DeactifX + ActifAngle : DeactifX;
 
             if (gate != null)
+                toDisableWhenActive.enabled = !isActif;
                 gate.SetOpen(isActif);
 
         }

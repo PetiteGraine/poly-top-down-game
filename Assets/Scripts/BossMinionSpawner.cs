@@ -97,7 +97,7 @@ public class BossMinionSpawner : MonoBehaviour
     {
         if (minionPrefab == null || target == null) return;
 
-        Vector3 forwardFlat = target.forward;
+        Vector3 forwardFlat = -target.forward;
         forwardFlat.y = 0f;
         forwardFlat = forwardFlat.sqrMagnitude > 0.0001f ? forwardFlat.normalized : Vector3.forward;
 

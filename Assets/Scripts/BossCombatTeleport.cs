@@ -12,7 +12,10 @@ public class BossCombatTeleport : MonoBehaviour
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform shootPoint;
     [SerializeField] private float projectileSpeed = 12f;
-    [SerializeField] private float shootCooldown = 2f;
+    [SerializeField] private float shootCooldown = 1f;
+    [SerializeField] private float shootRange = 300f;
+
+    [SerializeField] private Animator animator;
 
     private float lastTeleportTime;
     private float lastShootTime;
@@ -26,7 +29,7 @@ public class BossCombatTeleport : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating(nameof(ShootTick), 1f, 5f);
+        InvokeRepeating(nameof(ShootTick), 1f, shootCooldown);
     }
 
     private void ShootTick()
@@ -56,13 +59,8 @@ public class BossCombatTeleport : MonoBehaviour
 
     Vector3 GetRandomPointInZones()
     {
-        if (teleportZones == null || teleportZones.Length == 0)
-        {
-            Debug.LogWarning("[BossCombatTeleport] No teleport zones assigned.");
-            return transform.position;
-        }
+        if (teleportZones == null || teleportZones.Length == 0) return transform.position;
 
-        // On essaie plusieurs fois (zones + points) pour trouver un point valide sur le NavMesh
         for (int attempt = 0; attempt < 30; attempt++)
         {
             Collider zone = teleportZones[Random.Range(0, teleportZones.Length)];
@@ -85,25 +83,34 @@ public class BossCombatTeleport : MonoBehaviour
 
     public void TryShootAtPlayer(Transform player)
     {
+
         if (Time.time - lastShootTime < shootCooldown)
             return;
 
-        lastShootTime = Time.time;
+        float distSqr = (player.position - transform.position).sqrMagnitude;
+
+        if (distSqr > shootRange)
+            return;
 
         if (!shootPoint || !projectilePrefab || !player) return;
+
+        lastShootTime = Time.time;
 
         Vector3 dir = (player.position - shootPoint.position);
         dir.y = 0f;
         dir = dir.sqrMagnitude > 0.0001f ? dir.normalized : shootPoint.forward;
 
         GameObject proj = Instantiate(projectilePrefab, shootPoint.position, Quaternion.LookRotation(dir));
+        animator.Play("Attack");
         BossProjectile bp = proj.GetComponent<BossProjectile>();
         if (bp != null)
-            bp.Init(teleportZones); // teleportZones du boss
+            bp.Init(teleportZones);
 
 
         Rigidbody rb = proj.GetComponent<Rigidbody>();
         if (rb)
             rb.linearVelocity = dir * projectileSpeed;
+
+
     }
 }
