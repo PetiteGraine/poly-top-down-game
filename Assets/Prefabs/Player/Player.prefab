@@ -761,6 +761,7 @@ MonoBehaviour:
   _DMGText: {fileID: 0}
   _ASText: {fileID: 0}
   _MSText: {fileID: 0}
+  _gameOverScreen: {fileID: 0}
 --- !u!114 &7620961967263341845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2664,14 +2665,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1603020513031338630}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5730106578653820478}
   m_Father: {fileID: 4463868907105534}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &3667446890891425715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2684,6 +2685,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99f3afe7c029a5e4eac376220522b351, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 4463868907105534}
+  mouseSensitivity: 3
+  minPitch: 0
+  maxPitch: 90
+  zoomSpeed: 20
+  minZoom: 5
+  maxZoom: 20
 --- !u!1 &3317484180847401289
 GameObject:
   m_ObjectHideFlags: 0
@@ -2712,13 +2720,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3317484180847401289}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 10, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4489979758600709824}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &1669965836854363113
 Camera:
   m_ObjectHideFlags: 0

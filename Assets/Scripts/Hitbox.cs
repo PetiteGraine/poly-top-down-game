@@ -4,9 +4,11 @@ public class Hitbox : MonoBehaviour
 {
     [SerializeField] private int _damageAmount = 10;
     [SerializeField] private float _lifetime = 2f;
+    [SerializeField] private bool hasLifetime = true;
 
     private void Start()
     {
+        if (!hasLifetime) return;
         Destroy(gameObject, _lifetime);
     }
 
@@ -17,6 +19,7 @@ public class Hitbox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.isTrigger) return;
 
         if (other.CompareTag("Player"))
         {

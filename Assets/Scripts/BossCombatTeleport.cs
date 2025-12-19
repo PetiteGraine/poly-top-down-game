@@ -4,14 +4,18 @@ using UnityEngine.AI;
 public class BossCombatTeleport : MonoBehaviour
 {
     [Header("Teleport Zones")]
-    [SerializeField] private Collider[] teleportZones; // ✅ plusieurs zones
+    [SerializeField] private Collider[] teleportZones;
     [SerializeField] private float teleportCooldown = 1f;
 
     [Header("Projectile")]
+    [SerializeField] private GameObject Player;
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform shootPoint;
     [SerializeField] private float projectileSpeed = 12f;
-    [SerializeField] private float shootCooldown = 2f;
+    [SerializeField] private float shootCooldown = 1f;
+    [SerializeField] private float shootRange = 300f;
+
+    [SerializeField] private Animator animator;
 
     private float lastTeleportTime;
     private float lastShootTime;
@@ -23,7 +27,17 @@ public class BossCombatTeleport : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
     }
 
-    // Appelé depuis EnemyStats quand le boss prend des dégâts
+    private void Start()
+    {
+        InvokeRepeating(nameof(ShootTick), 1f, shootCooldown);
+    }
+
+    private void ShootTick()
+    {
+        if (Player == null) return;
+        TryShootAtPlayer(Player.transform);
+    }
+
     public void OnBossDamaged()
     {
         if (Time.time - lastTeleportTime < teleportCooldown)
@@ -45,13 +59,8 @@ public class BossCombatTeleport : MonoBehaviour
 
     Vector3 GetRandomPointInZones()
     {
-        if (teleportZones == null || teleportZones.Length == 0)
-        {
-            Debug.LogWarning("[BossCombatTeleport] No teleport zones assigned.");
-            return transform.position;
-        }
+        if (teleportZones == null || teleportZones.Length == 0) return transform.position;
 
-        // On essaie plusieurs fois (zones + points) pour trouver un point valide sur le NavMesh
         for (int attempt = 0; attempt < 30; attempt++)
         {
             Collider zone = teleportZones[Random.Range(0, teleportZones.Length)];
@@ -74,21 +83,34 @@ public class BossCombatTeleport : MonoBehaviour
 
     public void TryShootAtPlayer(Transform player)
     {
+
         if (Time.time - lastShootTime < shootCooldown)
             return;
 
-        lastShootTime = Time.time;
+        float distSqr = (player.position - transform.position).sqrMagnitude;
+
+        if (distSqr > shootRange)
+            return;
 
         if (!shootPoint || !projectilePrefab || !player) return;
+
+        lastShootTime = Time.time;
 
         Vector3 dir = (player.position - shootPoint.position);
         dir.y = 0f;
         dir = dir.sqrMagnitude > 0.0001f ? dir.normalized : shootPoint.forward;
 
         GameObject proj = Instantiate(projectilePrefab, shootPoint.position, Quaternion.LookRotation(dir));
+        animator.Play("Attack");
+        BossProjectile bp = proj.GetComponent<BossProjectile>();
+        if (bp != null)
+            bp.Init(teleportZones);
+
 
         Rigidbody rb = proj.GetComponent<Rigidbody>();
         if (rb)
             rb.linearVelocity = dir * projectileSpeed;
+
+
     }
 }

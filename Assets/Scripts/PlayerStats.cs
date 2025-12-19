@@ -16,6 +16,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _DMGText;
     [SerializeField] private TextMeshProUGUI _ASText;
     [SerializeField] private TextMeshProUGUI _MSText;
+    [SerializeField] private GameObject _gameOverScreen;
 
     private void Start()
     {
@@ -45,13 +46,15 @@ public class PlayerStats : MonoBehaviour
         _HPText.text = $"HP: {_currentHealth}";
         if (_currentHealth <= 0)
         {
+            _currentHealth = 0;
             Die();
         }
     }
 
     private void Die()
     {
-        Debug.Log("Player has died.");
+        _gameOverScreen.SetActive(true);
+        Time.timeScale = 0f;
     }
 
     public int GetAttackDamage()

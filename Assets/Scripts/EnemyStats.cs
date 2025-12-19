@@ -9,8 +9,19 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] private int _attackDamage = 1;
     [SerializeField] private float _attackSpeed = 1;
     [SerializeField] private float _moveSpeed = 5;
+    [SerializeField] private Animator animator;
+    [SerializeField] private bool isBoss = false;
+    [SerializeField] private GameObject winPanel;
+    [SerializeField] private GameObject gameOverText;
+    [SerializeField] private GameObject winnerText;
 
     private BossCombatTeleport _bossCombat; // Reference to the BossCombatTeleport script
+    private BossMinionSpawner spawner;
+
+    public void Init(BossMinionSpawner s)
+    {
+        spawner = s;
+    }
 
     private void Awake() // Reference to the BossCombatTeleport script
     {
@@ -26,13 +37,19 @@ public class EnemyStats : MonoBehaviour
     public void TakeDamage(int damage)
     {
         _currentHealth -= damage;
-        Debug.Log($"Enemy took {damage} damage, current health: {_currentHealth}");
-        if (_bossCombat != null)    // Reference to the BossCombatTeleport script
+        animator.Play("GetHit");
+        if (_bossCombat != null)
             _bossCombat.OnBossDamaged();
 
         _healthText.text = $"HP: {_currentHealth}";
         if (_currentHealth <= 0)
         {
+            if (isBoss)
+            {
+                gameOverText.SetActive(false);
+                winPanel.SetActive(true);
+                winnerText.SetActive(true);
+            }
             Die();
         }
     }
@@ -40,6 +57,9 @@ public class EnemyStats : MonoBehaviour
     private void Die()
     {
         Debug.Log("Enemy has died.");
+
+        if (spawner != null)
+            spawner.NotifyMinionDestroyed();
 
         Destroy(gameObject);
     }

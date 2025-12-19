@@ -38,9 +38,45 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleMovement()
     {
-        Vector3 move = new Vector3(_moveInput.x, 0, _moveInput.y);
-        transform.Translate(move * Time.deltaTime * _playerStats.GetMoveSpeed(), Space.World);
+        //// Directions caméra
+        //Vector3 camForward = _mainCamera.transform.forward;
+        //Vector3 camRight = _mainCamera.transform.right;
+
+        //// On annule l'influence verticale
+        //camForward.y = 0f;
+        //camRight.y = 0f;
+
+        //camForward.Normalize();
+        //camRight.Normalize();
+
+        //Vector3 move =
+        //    camForward * _moveInput.y +
+        //    camRight * _moveInput.x;
+
+        //transform.Translate(
+        //    move * Time.deltaTime * _playerStats.GetMoveSpeed(),
+        //    Space.World
+        //    );
+        ////Vector3 move = new Vector3(_moveInput.x, 0f, _moveInput.y);
+        //transform.Translate(
+        //    move * Time.deltaTime * _playerStats.GetMoveSpeed(),
+        //    Space.World
+        //);
+
+        // On récupère UNIQUEMENT la rotation Y de la caméra
+        Vector3 forward = Quaternion.Euler(0f, _mainCamera.transform.eulerAngles.y, 0f) * Vector3.forward;
+        Vector3 right = Quaternion.Euler(0f, _mainCamera.transform.eulerAngles.y, 0f) * Vector3.right;
+
+        Vector3 move =
+            forward * _moveInput.y +
+            right * _moveInput.x;
+
+        transform.Translate(
+            move * Time.deltaTime * _playerStats.GetMoveSpeed(),
+            Space.World
+        );
     }
+
 
     private void HandleRotation()
     {
