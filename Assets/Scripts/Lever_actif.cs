@@ -37,7 +37,10 @@ public class Lever_actif : MonoBehaviour
             targetX = isActif ? DeactifX + ActifAngle : DeactifX;
 
             if (gate != null)
-                toDisableWhenActive.enabled = !isActif;
+                if (toDisableWhenActive != null)
+                {
+                    toDisableWhenActive.enabled = !isActif;
+                }
                 gate.SetOpen(isActif);
 
         }
