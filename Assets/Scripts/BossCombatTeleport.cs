@@ -4,10 +4,11 @@ using UnityEngine.AI;
 public class BossCombatTeleport : MonoBehaviour
 {
     [Header("Teleport Zones")]
-    [SerializeField] private Collider[] teleportZones; // ✅ plusieurs zones
+    [SerializeField] private Collider[] teleportZones;
     [SerializeField] private float teleportCooldown = 1f;
 
     [Header("Projectile")]
+    [SerializeField] private GameObject Player;
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private Transform shootPoint;
     [SerializeField] private float projectileSpeed = 12f;
@@ -23,7 +24,17 @@ public class BossCombatTeleport : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
     }
 
-    // Appelé depuis EnemyStats quand le boss prend des dégâts
+    private void Start()
+    {
+        InvokeRepeating(nameof(ShootTick), 1f, 5f);
+    }
+
+    private void ShootTick()
+    {
+        if (Player == null) return;
+        TryShootAtPlayer(Player.transform);
+    }
+
     public void OnBossDamaged()
     {
         if (Time.time - lastTeleportTime < teleportCooldown)
@@ -86,6 +97,10 @@ public class BossCombatTeleport : MonoBehaviour
         dir = dir.sqrMagnitude > 0.0001f ? dir.normalized : shootPoint.forward;
 
         GameObject proj = Instantiate(projectilePrefab, shootPoint.position, Quaternion.LookRotation(dir));
+        BossProjectile bp = proj.GetComponent<BossProjectile>();
+        if (bp != null)
+            bp.Init(teleportZones); // teleportZones du boss
+
 
         Rigidbody rb = proj.GetComponent<Rigidbody>();
         if (rb)

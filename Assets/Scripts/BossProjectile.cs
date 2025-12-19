@@ -6,16 +6,13 @@ public class BossProjectile : MonoBehaviour
     [SerializeField] private float lifeTime = 5f;
 
     [Header("Teleport Zones")]
-    [SerializeField] private Collider[] teleportZones; // liste de zones
-    [SerializeField] private int maxTries = 20;
-    [SerializeField] private float navMeshSampleRadius = 2f;
+    private Collider[] teleportZones;
 
     private void Start()
     {
         Destroy(gameObject, lifeTime);
     }
 
-    // Optionnel mais pratique : le boss peut passer la liste au projectile
     public void Init(Collider[] zones)
     {
         teleportZones = zones;
@@ -31,14 +28,10 @@ public class BossProjectile : MonoBehaviour
 
     void TeleportPlayer(Transform player)
     {
-        if (teleportZones == null || teleportZones.Length == 0)
-        {
-            Debug.LogWarning("[BossProjectile] No teleport zones assigned.");
-            return;
-        }
+        if (teleportZones == null || teleportZones.Length == 0) return;
+       
 
-        if (!TryGetRandomPointInZones(out Vector3 dest))
-            return;
+        Vector3 dest = TryGetRandomPointInZones();
 
         CharacterController cc = player.GetComponent<CharacterController>();
         if (cc) cc.enabled = false;
@@ -48,9 +41,9 @@ public class BossProjectile : MonoBehaviour
         if (cc) cc.enabled = true;
     }
 
-    bool TryGetRandomPointInZones(out Vector3 result)
+    Vector3 TryGetRandomPointInZones()
     {
-        for (int attempt = 0; attempt < maxTries; attempt++)
+        for (int attempt = 0; attempt < 30; attempt++)
         {
             Collider zone = teleportZones[Random.Range(0, teleportZones.Length)];
             if (zone == null) continue;
@@ -63,15 +56,10 @@ public class BossProjectile : MonoBehaviour
                 Random.Range(b.min.z, b.max.z)
             );
 
-            if (NavMesh.SamplePosition(randomPos, out var hit, navMeshSampleRadius, NavMesh.AllAreas))
-            {
-                result = hit.position;
-                return true;
-            }
-
+            if (NavMesh.SamplePosition(randomPos, out var hit, 10f, NavMesh.AllAreas))
+                return hit.position;
         }
 
-        result = Vector3.zero;
-        return false;
+        return transform.position;
     }
 }

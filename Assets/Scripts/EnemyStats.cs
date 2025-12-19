@@ -11,6 +11,12 @@ public class EnemyStats : MonoBehaviour
     [SerializeField] private float _moveSpeed = 5;
 
     private BossCombatTeleport _bossCombat; // Reference to the BossCombatTeleport script
+    private BossMinionSpawner spawner;
+
+    public void Init(BossMinionSpawner s)
+    {
+        spawner = s;
+    }
 
     private void Awake() // Reference to the BossCombatTeleport script
     {
@@ -40,6 +46,9 @@ public class EnemyStats : MonoBehaviour
     private void Die()
     {
         Debug.Log("Enemy has died.");
+
+        if (spawner != null)
+            spawner.NotifyMinionDestroyed();
 
         Destroy(gameObject);
     }
