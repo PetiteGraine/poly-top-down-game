@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Animator _playerAnimator;
     [SerializeField] private PlayerWeapon _playerWeapon;
     private Vector2 _moveInput;
+    private Vector3 _mouseDirection;
+
 
     private void Start()
     {
