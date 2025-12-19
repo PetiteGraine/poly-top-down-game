@@ -38,9 +38,27 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleMovement()
     {
-        Vector3 move = new Vector3(_moveInput.x, 0, _moveInput.y);
-        transform.Translate(move * Time.deltaTime * _playerStats.GetMoveSpeed(), Space.World);
+        // Directions caméra
+        Vector3 camForward = _mainCamera.transform.forward;
+        Vector3 camRight = _mainCamera.transform.right;
+
+        // On annule l'influence verticale
+        camForward.y = 0f;
+        camRight.y = 0f;
+
+        camForward.Normalize();
+        camRight.Normalize();
+
+        Vector3 move =
+            camForward * _moveInput.y +
+            camRight * _moveInput.x;
+
+        transform.Translate(
+            move * Time.deltaTime * _playerStats.GetMoveSpeed(),
+            Space.World
+        );
     }
+
 
     private void HandleRotation()
     {
