@@ -5,18 +5,26 @@ using UnityEngine.AI;
 public class BossMinionSpawner : MonoBehaviour
 {
     [Header("Target")]
-    [SerializeField] private Transform target;              // Player
-    [SerializeField] private float detectRange = 15f;       // distance (à plat)
+    [SerializeField] private Transform target;              
+    [SerializeField] private float detectRange = 15f;       
     [SerializeField] private float reachableSampleRadius = 2f;
 
     [Header("Spawn")]
     [SerializeField] private GameObject minionPrefab;
-    [SerializeField] private float spawnInterval = 2.5f;
     [SerializeField] private float spawnDistanceInFront = 2.0f;
-    [SerializeField] private float spawnHeightOffset = 0.0f;
+
 
     [Header("Performance / Stability")]
-    [SerializeField] private float reachableCheckInterval = 0.5f; // pas à chaque frame
+    [SerializeField] private float reachableCheckInterval = 0.5f;
+
+    [Header("Spawn Limits")]
+    [SerializeField] private int maxAliveMinions = 3;
+    [SerializeField] private int maxTotalMinions = 5;
+    [SerializeField] private float forcedSpawnInterval = 10f;
+
+    private int aliveMinions = 0;
+    private int totalSpawned = 0;
+
 
     private NavMeshAgent agent;
     private Coroutine spawnRoutine;
@@ -36,6 +44,12 @@ public class BossMinionSpawner : MonoBehaviour
             StopSpawning();
             return;
         }
+        if (totalSpawned >= maxTotalMinions)
+        {
+            StopSpawning();
+            return;
+        }
+
 
         bool inRange = FlatDistance(transform.position, target.position) <= detectRange;
 
@@ -47,7 +61,7 @@ public class BossMinionSpawner : MonoBehaviour
         }
 
         bool shouldSpawn = inRange && reachableCached;
-        Debug.Log($"Spawner: inRange={inRange}, reachable={reachableCached}, shouldSpawn={shouldSpawn}");
+
         if (shouldSpawn) StartSpawning();
         else StopSpawning();
     }
@@ -69,12 +83,15 @@ public class BossMinionSpawner : MonoBehaviour
 
     IEnumerator SpawnLoop()
     {
-        while (true)
+        while (aliveMinions < maxAliveMinions && totalSpawned < maxTotalMinions)
         {
             SpawnMinionInFrontOfTarget();
-            yield return new WaitForSeconds(spawnInterval);
+            yield return new WaitForSeconds(forcedSpawnInterval);
         }
+        spawnRoutine = null;
     }
+
+
 
     void SpawnMinionInFrontOfTarget()
     {
@@ -85,7 +102,6 @@ public class BossMinionSpawner : MonoBehaviour
         forwardFlat = forwardFlat.sqrMagnitude > 0.0001f ? forwardFlat.normalized : Vector3.forward;
 
         Vector3 spawnPos = target.position + forwardFlat * spawnDistanceInFront;
-        spawnPos.y += spawnHeightOffset;
 
         // Optionnel : snap au NavMesh pour éviter les spawns dans le vide
         if (NavMesh.SamplePosition(spawnPos, out var hit, 2f, NavMesh.AllAreas))
@@ -94,6 +110,14 @@ public class BossMinionSpawner : MonoBehaviour
         Quaternion rot = Quaternion.LookRotation((target.position - spawnPos).WithY(0f), Vector3.up);
 
         GameObject minion = Instantiate(minionPrefab, spawnPos, rot);
+
+        aliveMinions++;
+        totalSpawned++;
+
+        var stats = minion.GetComponent<EnemyStats>();
+        if (stats != null)
+            stats.Init(this);
+
 
         // Donner la target (player) au minion
         var ai = minion.GetComponent<SlimeAI_Simple>();
@@ -119,6 +143,12 @@ public class BossMinionSpawner : MonoBehaviour
         agent.CalculatePath(hit.position, path);
         return path.status == NavMeshPathStatus.PathComplete;
     }
+
+    public void NotifyMinionDestroyed()
+    {
+        aliveMinions = Mathf.Max(0, aliveMinions - 1);
+    }
+
 }
 
 static class VecExt
