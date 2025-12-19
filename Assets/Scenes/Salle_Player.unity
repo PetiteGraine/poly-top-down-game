@@ -3744,7 +3744,7 @@ MonoBehaviour:
   ActifAngle: 50
   speed: 180
   gate: {fileID: 1624390627}
-  toDisableWhenActive: {fileID: 7778378755775842765}
+  toDisableWhenActive: {fileID: 0}
   isActif: 0
 --- !u!136 &89855582
 CapsuleCollider:

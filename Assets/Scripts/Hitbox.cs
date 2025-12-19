@@ -39,7 +39,7 @@ public class Hitbox : MonoBehaviour
                 {
                     enemyStats.TakeDamage(_damageAmount);
                 }
-                Destroy(gameObject);
+                //Destroy(gameObject);
             }
     }
 }
