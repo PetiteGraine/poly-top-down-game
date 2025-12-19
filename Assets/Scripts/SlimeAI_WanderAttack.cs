@@ -11,7 +11,11 @@ public class SlimeAI_Simple : MonoBehaviour
 
     [Header("Targets")]
     [SerializeField] private Transform target;
-    [SerializeField] private Transform center;
+
+    [Header("Home")]
+    [SerializeField] private bool useSpawnAsHome = true;
+    private Vector3 homePos;
+    private bool homeInitialized;
 
     [Header("Ranges")]
     [SerializeField] private float chaseRange = 6f;
@@ -38,11 +42,22 @@ public class SlimeAI_Simple : MonoBehaviour
     {
         if (!agent) agent = GetComponent<NavMeshAgent>();
         if (!anim) anim = GetComponent<Animator>();
-        if (!center) center = transform;
+        if (useSpawnAsHome)
+        {
+            homePos = transform.position;
+            homeInitialized = true;
+        }
     }
 
     void Update()
     {
+
+        if (target == null)
+        {
+            GoCenter();
+            UpdateAnimFromVelocity();
+            return;
+        }
 
         float dist = FlatDistance(transform.position, target.position);
 
@@ -72,13 +87,16 @@ public class SlimeAI_Simple : MonoBehaviour
 
     void GoCenter()
     {
+        if (!homeInitialized) return;
+
         repathTimer -= Time.deltaTime;
         if (repathTimer <= 0f)
         {
             repathTimer = repathInterval;
-            agent.SetDestination(center.position);
+            agent.SetDestination(homePos);
         }
     }
+
 
     bool TargetReachable()
     {
