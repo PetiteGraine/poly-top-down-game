@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MoveAndRotateBetweenPoints : MonoBehaviour
 {
-    [Header("Déplacement")]
+    [Header("DÃ©placement")]
     public Transform pointA;
     public Transform pointB;
     public float moveSpeed = 2f;
@@ -10,7 +10,8 @@ public class MoveAndRotateBetweenPoints : MonoBehaviour
     [Header("Rotation")]
     public Vector3 rotationAxis = Vector3.forward;
     public float rotationSpeed = 90f;
-
+    [SerializeField] private float _attackCooldown = 0.2f;
+    private float _attackCoaldownTimer = 0f;
     private Transform currentTarget;
 
     void Start()
@@ -32,5 +33,25 @@ public class MoveAndRotateBetweenPoints : MonoBehaviour
         }
 
         transform.Rotate(rotationAxis * rotationSpeed * Time.deltaTime, Space.Self);
+
+        if (_attackCoaldownTimer > 0f)
+        {
+            _attackCoaldownTimer -= Time.deltaTime;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (_attackCoaldownTimer > 0f)
+            return;
+        if (other.CompareTag("Player"))
+        {
+            PlayerStats playerStats = other.GetComponent<PlayerStats>();
+            if (playerStats != null)
+            {
+                playerStats.TakeDamage(1);
+                _attackCoaldownTimer = _attackCooldown;
+            }
+        }
     }
 }

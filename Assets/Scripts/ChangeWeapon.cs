@@ -17,7 +17,6 @@ public class ChangeWeapon : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Changing weapon");
             _playerWeapon.SwitchWeapon(_newWeaponIndex);
         }
     }

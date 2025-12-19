@@ -33,7 +33,6 @@ public class BossProjectile : MonoBehaviour
     {
         if (teleportZones == null || teleportZones.Length == 0)
         {
-            Debug.LogWarning("[BossProjectile] No teleport zones assigned.");
             return;
         }
 

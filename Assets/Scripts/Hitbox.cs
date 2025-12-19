@@ -17,6 +17,7 @@ public class Hitbox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.isTrigger) return;
 
         if (other.CompareTag("Player"))
         {

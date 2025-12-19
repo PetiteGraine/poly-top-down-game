@@ -26,8 +26,7 @@ public class EnemyStats : MonoBehaviour
     public void TakeDamage(int damage)
     {
         _currentHealth -= damage;
-        Debug.Log($"Enemy took {damage} damage, current health: {_currentHealth}");
-        if (_bossCombat != null)    // Reference to the BossCombatTeleport script
+        if (_bossCombat != null)
             _bossCombat.OnBossDamaged();
 
         _healthText.text = $"HP: {_currentHealth}";
@@ -39,8 +38,6 @@ public class EnemyStats : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Enemy has died.");
-
         Destroy(gameObject);
     }
 
