@@ -37,7 +37,7 @@ You can carry **one weapon** and equip up to **three augments** simultaneously.
 
 ## **Credits**
 
-This game was developed during a Unity workshop initiated by [Padrien 22](https://github.com/Padrien22).
+This game was developed by PetiteGraine and by [Padrien 22](https://github.com/Padrien22).
 
 **Assets:**
 
